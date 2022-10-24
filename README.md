@@ -42,7 +42,7 @@ source("dir1/dir2/pathotype.R")
 
 _E. coli_ genomes of interest must first be run through [`AMRFinderPlus`](https://github.com/ncbi/amr). See their instructions for recommended usage.
 
-`AMRFinderPlus` outputs a `_out.tsv` file for each sample. Copy all of these into one directory. The filepath of this directory will be the input for PathotypeR. 
+The `AMRFinderPlus` output must be saved as a `_out.tsv` file. This can be done using the output flag: `-o ${outdir}/${sample}_out.tsv`. Copy all of these output files into one directory. The filepath of this directory will be the input for PathotypeR. 
 
 ## Functions
 
@@ -60,7 +60,7 @@ pathotypeR(indir, output=c("patho_pred", "patho_prev", "vf_pres", "vf_prev"))
 ```
 
 #### Arguments
-`indir`		Filepath to directory containing `AMRFinderPlus` output `_out.tsv` files.
+`indir`		Filepath to directory containing `AMRFinderPlus` output files.
 
 `output`	Specifies output. `patho_pred` = for each sample, outputs VF count and pathotype prediction; `patho_prev` = for each pathotype, outputs count (i.e. number of samples) and overall prevalence; `vf_pres` = for each sample, outputs VF presence/absence (1=present, 0=absent); `vf_prev` = for each VF, outputs count and overall prevalence. Default is `patho_pred`.
 
@@ -78,7 +78,7 @@ df <- pathotypeR("data/amrfinder", output="vf_prev")
 ### `amrfinder_process()`
 
 #### Description
-Function for merging `AMRFinderPlus` output `_output.tsv` files into a single dataframe.
+Function for merging `AMRFinderPlus` output files into a single dataframe.
 
 #### Usage
 
@@ -88,7 +88,7 @@ amrfinder_process(indir)
 
 #### Arguments
 
-`indir`		Filepath to directory containing `AMRFinderPlus` output `_output.tsv` files.
+`indir`		Filepath to directory containing `AMRFinderPlus` output files.
 
 #### Examples
 
