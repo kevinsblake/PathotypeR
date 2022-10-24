@@ -46,7 +46,7 @@ _E. coli_ genomes of interest must first be run through [`AMRFinderPlus`](https:
 
 ## Functions
 
-### pathotypeR()
+### `pathotypeR()`
 
 #### Description
 Function for assigning DEC pathotype to _E. coli_ genomes. First calls `amrfinder_process()`.
@@ -75,7 +75,7 @@ df <- pathotypeR("data/amrfinder")
 df <- pathotypeR("data/amrfinder", output="vf_prev")
 ```
 
-### amrfinder_process()
+### `amrfinder_process()`
 
 #### Description
 Function for merging `AMRFinderPlus` output `_output.tsv` files into a single dataframe.
