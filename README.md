@@ -26,7 +26,6 @@ Hybrid strains contain genes associated with multiple DEC pathotypes and will be
 
 NOTE: PathotypeR does NOT assign pathotypes based on collection site or association with disease, such as: extraintesinal pathogenic _E. coli_ (ExPEC), uropathogenic _E. coli_ (UPEC), neonatal meningitis-associated _E. coli_ (NMEC), and sepsis-associated _E. coli_ (SEPEC).
 
-
 ## Install
 
 Install directly from GitHub:
@@ -34,10 +33,9 @@ Install directly from GitHub:
 source("https://raw.github.com/kevinsblake/PathotypeR/main/pathotype.R")
 ```
 
-Alternatively, download and copy the `pathotype.R` file into the source folder of a given RProject (e.g., ./src) and load:
-
+Alternatively, can download and then install using the filepath:
 ```r
-source("src/pathotype.R")
+source("dir1/dir2/pathotype.R")
 ```
 
 ## Pre-processing
@@ -102,4 +100,3 @@ df <- amrfinder_process("data/amrfinder")
 
 - Horesh _et al._ A comprehensive and high-quality collection of Escherichia coli genomes and their genes. _Microb Genom._ 2021 Feb;7(2):000499. doi: 10.1099/mgen.0.000499. PMID: 33417534.
 - Jesser & Levy. Updates on defining and detecting diarrheagenic Escherichia coli pathotypes. _Curr Opin Infect Dis._ 2020 Oct; 33(5): 372–380. doi: 10.1097/QCO.0000000000000665. PMID: 32773499.
-
