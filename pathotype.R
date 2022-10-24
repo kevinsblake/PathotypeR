@@ -14,7 +14,6 @@ amrfinder_process <- function(indir){
                         header=TRUE,
                         stringsAsFactors=FALSE),
              
-             # ignore if there is an error like an empty file
              error=function(e) NULL)
   })
   
@@ -25,7 +24,8 @@ amrfinder_process <- function(indir){
   
 }
 
-patho_pred <- function(indir, all=FALSE){
+
+pathotypeR <- function(indir, output=c("patho_pred", "patho_prev", "vf_pres", "vf_prev")){
   
   amrfinder_output <- amrfinder_process(indir)
   
@@ -49,7 +49,7 @@ patho_pred <- function(indir, all=FALSE){
     dplyr::group_by(sample, Gene_name) %>%
     dplyr::filter(row_number() == 1) %>% 
     dplyr::ungroup() %>% 
-    dplyr::mutate(Gene_name = stringr::str_replace_all(Gene_name, "[/-]", "_")) #necessary?
+    dplyr::mutate(Gene_name = stringr::str_replace_all(Gene_name, "[/-]", "_"))
   
   # Calculate VF prevalence        
   vf_prev <- output_fil %>% 
@@ -72,11 +72,11 @@ patho_pred <- function(indir, all=FALSE){
     # Count total number VFs per sample
     main <-  main %>% 
       inner_join(sample_vfs, by ="sample") %>%  
-      mutate(total_vfs = rowSums(select(., vfcols), na.rm = TRUE)) %>%
+      rowwise %>% mutate(total_vfs = sum(c_across(where(is.numeric)))) %>%
       dplyr::select(sample, total_vfs, everything())
     
     # Predict pathotype based on VFs present
-    vf.pred <- main %>% dplyr::select(sample, vfcols) %>% 
+    vf.pred <- main %>% dplyr::select(sample, any_of(vfcols)) %>% 
       mutate(
         STEC = case_when(stx1 == 1 & eae == 0 ~ 1,
                          stx2 == 1 & eae == 0 ~ 1,
@@ -92,11 +92,11 @@ patho_pred <- function(indir, all=FALSE){
                          aatA == 1 ~ 1,
                          TRUE ~ 0),
         ETEC = case_when(ltcA == 1 ~ 1,
-                         sta1 == 1 ~ 1, #astA
+                         sta1 == 1 ~ 1,
                          TRUE ~ 0),
         DAEC = case_when(afaC == 1 ~ 1,
                          TRUE ~ 0),
-        EIEC = case_when(ipaH == 1 ~ 1, #ipaD
+        EIEC = case_when(ipaH == 1 ~ 1,
                          TRUE ~ 0),
         none = case_when(stx1 == 0 & stx2 == 0 & eae == 0 & bfpA == 0 & aggR == 0 & aaiC == 0 & aatA == 0 &
                          ltcA == 0 & sta1 == 0 & afaC == 0 & ipaH == 0 ~ 1, 
@@ -107,20 +107,41 @@ patho_pred <- function(indir, all=FALSE){
     pathcols <- c("EAEC", "EPEC", "STEC", "ETEC", "EHEC", "EIEC", "DAEC", "none")
     
     tmp.df <- vf.pred %>% 
-      dplyr::select(sample, all_of(pathcols)) %>%
-      tidyr::gather(key="Pathotype", value="flag", pathcols) %>%
+      tidyr::gather(key="Pathotype", value="flag", any_of(pathcols)) %>%
       filter(flag == 1) %>% 
       group_by(sample) %>% 
       summarise(pred = paste(Pathotype, collapse = "-"))
     
-    patho_output <- main %>% 
+    # Predict pathotype
+    patho_pred <- main %>% 
       inner_join(tmp.df, by ="sample") %>%  
-      dplyr::select(sample, pred)
+      dplyr::select(sample, total_vfs, pred)
     
-    if (all) {
-      patho_output <- main %>% 
-        inner_join(tmp.df, by ="sample") %>%  
-        dplyr::select(sample, pred, total_vfs, everything())
+    # Calculate pathotype prevalence        
+    patho_prev <- tmp.df %>% 
+      dplyr::group_by(pred) %>% 
+      dplyr::summarise(Cnt = n(), 
+                       prev = round(Cnt/num_sampl, 4)) %>%
+      dplyr::ungroup()
+
+    if (missing(output)){
+      output <- "patho_pred"
+    }
+    
+    if (output == "patho_pred") {
+      patho_output <- patho_pred
+    }
+    
+    if (output == "vf_pres") {
+      patho_output <- sample_vfs
+    }
+    
+    if (output == "vf_prev") {
+      patho_output <- vf_prev
+    }
+    
+    if (output == "patho_prev") {
+      patho_output <- patho_prev
     }
 
     return(patho_output)

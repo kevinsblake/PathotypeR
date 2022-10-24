@@ -9,8 +9,8 @@ This package assigns _E. coli_ genomes a diarrheagenic _E. coli_ (DEC) pathotype
 ## Description
 
 PathotypeR includes two functions:
-1. `patho_pred()`: Assigns a DEC pathotype to each sample. Can also return total VF count per sample and presence/absence of each VF.
-2. `amrfinder_process()`: Merges `AMRFinderPlus` output files into a single dataframe. (Called by `patho_pred()` but can be used on own.)
+1. `pathotypeR()`: Function that quantifies each samples' VFs and assigns a DEC pathotype. Can also return total VF count per sample, VF presence/absence, the prevalence of each pathotype, and the prevalence of each VF.
+2. `amrfinder_process()`: Merges `AMRFinderPlus` output files into a single dataframe. (Called by `pathotypeR()` but can be used on own.)
 
 Genomes are assigned a DEC pathotype based on the presence/absence of specific VF genes. Namely:
 - Shiga toxin-producing _E. coli_ (STEC): _stx1_ and/or _stx2_ (without _eae_)
@@ -21,6 +21,8 @@ Genomes are assigned a DEC pathotype based on the presence/absence of specific V
 - Enteroaggregative _E. coli_ (EAEC): _aatA_ and/or _aaiC_ and/or _aggR_
 - Diffusely adherent _E. coli_ (DAEC): _afaC_
 - none: does not encode any of the above VF genes
+
+Hybrid strains contain genes associated with multiple DEC pathotypes and will be reported as all pathotypes detected (e.g., STEC-EAEC, EPEC-ETEC). 
 
 NOTE: PathotypeR does NOT assign pathotypes based on collection site or association with disease, such as: extraintesinal pathogenic _E. coli_ (ExPEC), uropathogenic _E. coli_ (UPEC), neonatal meningitis-associated _E. coli_ (NMEC), and sepsis-associated _E. coli_ (SEPEC).
 
@@ -46,7 +48,7 @@ _E. coli_ genomes of interest must first be run through [`AMRFinderPlus`](https:
 
 ## Functions
 
-### patho_pred()
+### pathotypeR()
 
 #### Description
 Function for assigning DEC pathotype to _E. coli_ genomes. First calls `amrfinder_process()`.
@@ -54,26 +56,25 @@ Function for assigning DEC pathotype to _E. coli_ genomes. First calls `amrfinde
 #### Usage
 
 ```r
-patho_pred(
-	indir,
-	all = FALSE
-	)
+library(dplyr)
+
+pathotypeR(indir, output=c("patho_pred", "patho_prev", "vf_pres", "vf_prev"))
 ```
 
 #### Arguments
 `indir`		Filepath to directory containing `AMRFinderPlus` output `_out.tsv` files.
 
-`all`		Should total VF count per sample and presence/absence of each VF (1=presence, 0=absence) be returned in addition to pathotype? Default is set to FALSE.
+`output`	Specifies output. `patho_pred` = for each sample, outputs VF count and pathotype prediction; `patho_prev` = for each pathotype, outputs count (i.e. number of samples) and overall prevalence; `vf_pres` = for each sample, outputs VF presence/absence (1=present, 0=absent); `vf_prev` = for each VF, outputs count and overall prevalence. Default is `patho_pred`.
 
 
 #### Examples
 
 ```r
-# Outputs just the sample names and pathotype prediction
-df <- patho_pred("data/amrfinder")
+# Outputs just sample names, VF count, and pathotype prediction
+df <- pathotypeR("data/amrfinder")
 
-# Outputs sample name, pathotype prediction, total VF count per sample, and presence/absence of each VF
-df <- patho_pred("data/amrfinder", all=TRUE)
+# Outputs all VFs detected, count, and overall prevalence
+df <- pathotypeR("data/amrfinder", output="vf_prev")
 ```
 
 ### amrfinder_process()
@@ -84,9 +85,7 @@ Function for merging `AMRFinderPlus` output `_output.tsv` files into a single da
 #### Usage
 
 ```r
-amrfinder_process(
-	indir
-	)
+amrfinder_process(indir)
 ```
 
 #### Arguments
