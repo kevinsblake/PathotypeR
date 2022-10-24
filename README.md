@@ -31,7 +31,7 @@ NOTE: PathotypeR does NOT assign pathotypes based on collection site or associat
 
 Install directly from GitHub:
 ```r
-source(https://raw.github.com/kevinsblake/PathotypeR/main/pathotype.R)
+source("https://raw.github.com/kevinsblake/PathotypeR/main/pathotype.R")
 ```
 
 Alternatively, download and copy the `pathotype.R` file into the source folder of a given RProject (e.g., ./src) and load:
