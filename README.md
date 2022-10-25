@@ -1,7 +1,7 @@
 # PathotypeR
 DEC pathotype assignment of _E. coli_ genomes in R.
 
-This package assigns _E. coli_ genomes a diarrheagenic _E. coli_ (DEC) pathotype based on the presence/absence of specific virulence factor (VF) genes. Requires the output of [`AMRFinderPlus`](https://github.com/ncbi/amr).
+This function assigns _E. coli_ genomes a diarrheagenic _E. coli_ (DEC) pathotype based on the presence/absence of specific virulence factor (VF) genes. Requires the output of [`AMRFinderPlus`](https://github.com/ncbi/amr).
 
 
 # Content
