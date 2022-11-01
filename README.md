@@ -42,7 +42,7 @@ source("dir1/dir2/pathotype.R")
 
 _E. coli_ genomes of interest must first be run through [`AMRFinderPlus`](https://github.com/ncbi/amr). See their instructions for recommended usage.
 
-The `AMRFinderPlus` output must be saved as a `_out.tsv` file. This can be done using the output flag: `-o ${outdir}/${sample}_out.tsv`. Copy all of these output files into one directory. The filepath of this directory will be the input for PathotypeR. 
+The `AMRFinderPlus` output must be saved as a `.tsv` file. This can be done using the output flag: `-o ${outdir}/${sample}.tsv`. Copy all of these output files into one directory. The filepath of this directory will be the input for PathotypeR. 
 
 ## Functions
 

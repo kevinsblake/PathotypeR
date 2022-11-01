@@ -3,7 +3,7 @@ amrfinder_process <- function(indir){
 
   filenames <- list.files(indir, full.names=TRUE)
   filenames2 <- list.files(indir)
-  samplelist <- gsub("_out.tsv","",filenames2) 
+  samplelist <- gsub(".tsv","",filenames2) 
   
   mydfs <- lapply(filenames, function(df){
                         tryCatch(read.table(df,
