@@ -14,12 +14,12 @@ PathotypeR includes two functions:
 
 Genomes are assigned a DEC pathotype based on the presence/absence of specific VF genes. Namely:
 - Shiga toxin-producing _E. coli_ (STEC): _stx1_ and/or _stx2_ (without _eae_)
-- Enteropathogenic _E. coli_ (EPEC): _eae_ (without _stx1_ and/or _stx2_)
+- Enteropathogenic _E. coli_ (EPEC): _eae_ and/or _bfpA_ (without _stx1_ and/or _stx2_)
 - Enterohaemorrhagic _E. coli_ (EHEC): _stx1_ and/or _stx2_, and _eae_
 - Enteroinvasive _E. coli_ (EIEC): _ipaH_
 - Enterotoxigenic _E. coli_ (ETEC): _ltcA_ and/or _sta1_
 - Enteroaggregative _E. coli_ (EAEC): _aatA_ and/or _aaiC_ and/or _aggR_
-- Diffusely adherent _E. coli_ (DAEC): _afaC_
+- Diffusely adherent _E. coli_ (DAEC): _afaC_ and/or _afaE_
 - none: does not encode any of the above VF genes
 
 Hybrid strains contain genes associated with multiple DEC pathotypes and will be reported as all pathotypes detected (e.g., STEC-EAEC, EPEC-ETEC). 

@@ -95,11 +95,12 @@ pathotypeR <- function(indir, output=c("patho_pred", "patho_prev", "vf_pres", "v
                          sta1 == 1 ~ 1,
                          TRUE ~ 0),
         DAEC = case_when(afaC == 1 ~ 1,
+                         afaE == 1 ~ 1,
                          TRUE ~ 0),
         EIEC = case_when(ipaH == 1 ~ 1,
                          TRUE ~ 0),
         none = case_when(stx1 == 0 & stx2 == 0 & eae == 0 & bfpA == 0 & aggR == 0 & aaiC == 0 & aatA == 0 &
-                         ltcA == 0 & sta1 == 0 & afaC == 0 & ipaH == 0 ~ 1, 
+                         ltcA == 0 & sta1 == 0 & afaC == 0 & afaE == 0 & ipaH == 0 ~ 1, 
                          TRUE ~ 0)) %>% 
       dplyr::select(sample, 
                     EAEC, ETEC, DAEC, EPEC, STEC, EHEC, EIEC, none)
